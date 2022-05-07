@@ -1,107 +1,76 @@
-<script lang="ts">
-  import type {
-    PaginationHeaders,
-    GithubComment,
-    ParsedGithubComment,
-  } from "./types";
-  import { parseLinkHeaders } from "./utils";
-
-  export let issueUri = "";
-  export let useShowCommentsButton = true;
-  export let allowRefreshingComments = true;
-  export let commentsPerPage = 100;
-
-  let showComments = !useShowCommentsButton;
-
-  let comments: ParsedGithubComment[] = [];
-
-  let commentsHaveLoaded = false;
-
-  let paginationHeaders: PaginationHeaders | null = null;
-
-  let page = 1;
-
-  $: numberOfPages = paginationHeaders?.last ? paginationHeaders.last : page;
-
-  let refreshCommentsCooldown = false;
-
-  const loadComments = async () => {
+<script>import { parseLinkHeaders } from "./utils";
+export let issueUri = "";
+export let useShowCommentsButton = true;
+export let allowRefreshingComments = true;
+export let commentsPerPage = 100;
+let showComments = !useShowCommentsButton;
+let comments = [];
+let commentsHaveLoaded = false;
+let paginationHeaders = null;
+let page = 1;
+$: numberOfPages = paginationHeaders?.last ? paginationHeaders.last : page;
+let refreshCommentsCooldown = false;
+const loadComments = async () => {
     commentsHaveLoaded = false;
-
     try {
-      const res = await fetch(
-        `https://api.github.com/repos/${issueUri}/comments?page=${page}&per_page=${commentsPerPage}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/vnd.github.v3.html+json",
-          },
+        const res = await fetch(`https://api.github.com/repos/${issueUri}/comments?page=${page}&per_page=${commentsPerPage}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/vnd.github.v3.html+json",
+            },
+        });
+        const link = res.headers.get("link");
+        if (link) {
+            paginationHeaders = parseLinkHeaders(link);
         }
-      );
-
-      const link = res.headers.get("link");
-
-      if (link) {
-        paginationHeaders = parseLinkHeaders(link);
-      }
-
-      const data = await res.json();
-
-      if (data.message === "Not Found") {
-        throw Error(`The issueUri: "${issueUri}" doesn't exist`);
-      }
-
-      if (data.message) {
-        throw Error(data.message);
-      }
-
-      comments = data.map((comment: GithubComment) => {
-        return {
-          body: { __html: comment["body_html"] },
-          user: {
-            username: comment.user.login,
-            avatarUrl: comment.user["avatar_url"],
-            isRepositoryOwner: comment["author_association"] === "OWNER",
-          },
-          createdAt: comment["created_at"],
-        };
-      });
-
-      commentsHaveLoaded = true;
-    } catch (e) {
-      // Log error but don't do anything as comments will infinitely load
-      console.error(e);
+        const data = await res.json();
+        if (data.message === "Not Found") {
+            throw Error(`The issueUri: "${issueUri}" doesn't exist`);
+        }
+        if (data.message) {
+            throw Error(data.message);
+        }
+        comments = data.map((comment) => {
+            return {
+                body: { __html: comment["body_html"] },
+                user: {
+                    username: comment.user.login,
+                    avatarUrl: comment.user["avatar_url"],
+                    isRepositoryOwner: comment["author_association"] === "OWNER",
+                },
+                createdAt: comment["created_at"],
+            };
+        });
+        commentsHaveLoaded = true;
     }
-  };
-
-  $: {
+    catch (e) {
+        // Log error but don't do anything as comments will infinitely load
+        console.error(e);
+    }
+};
+$: {
     if ((showComments && page) || issueUri) {
-      loadComments();
+        loadComments();
     }
-  }
-
-  const refreshComments = () => {
+}
+const refreshComments = () => {
     refreshCommentsCooldown = true;
-
     loadComments();
-
     setTimeout(() => (refreshCommentsCooldown = false), 1000);
-  };
-
-  const removeEmailContent = (node: HTMLElement) => {
+};
+const removeEmailContent = (node) => {
     if (node !== null) {
-      const emailElements = [
-        node.querySelector(".email-hidden-toggle"),
-        node.querySelector(".email-hidden-reply"),
-      ];
-
-      emailElements.forEach((element) => {
-        if (element) {
-          node.removeChild(element);
-        }
-      });
+        const emailElements = [
+            node.querySelector(".email-hidden-toggle"),
+            node.querySelector(".email-hidden-reply"),
+        ];
+        emailElements.forEach((element) => {
+            if (element) {
+                node.removeChild(element);
+            }
+        });
     }
-  };
+};
 </script>
 
 <section class="github-issue-comments">

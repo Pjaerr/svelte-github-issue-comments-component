@@ -3,7 +3,7 @@
 
   const issueUri = "Pjaerr/Svelte-Electron-Desktop-App/issues/1";
   const commentsPerPage = 3;
-  const useShowCommentsButton = false;
+  const useShowCommentsButton = true;
   const allowRefreshingComments = true;
 </script>
 
