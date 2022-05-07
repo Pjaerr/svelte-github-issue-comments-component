@@ -25,11 +25,9 @@ I wanted to have a static blog, but still allow some form of communication metho
 
 ## Usage
 
-TODO: Release package on npm
+1. Install the package `npm i svelte-github-issue-comments-component` (https://www.npmjs.com/package/svelte-github-issue-comments-component)
 
-1. Install the package
-
-2. ???
+2. Import it anywhere Svelte components are supported like: `import GithubIssueComments from "svelte-github-issue-comments-component/GithubIssueComments/GithubIssueComments.svelte";`
 
 ### Example Usage
 ```jsx
