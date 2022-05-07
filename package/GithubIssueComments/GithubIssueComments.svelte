@@ -165,12 +165,7 @@ const removeEmailContent = (node) => {
 </section>
 
 <style>
-  /*Component Container*/
-  .github-issue-comments {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
+  :global(:root) {
     --github-issue-comments-comment-spacing: 10px;
     --github-issue-comments-avatar-size: 32px;
     --github-issue-comments-text-color: #24292e;
@@ -199,6 +194,13 @@ const removeEmailContent = (node) => {
     --github-issue-comments-show-comments-button-text-color: #586069;
 
     --github-issue-comments-meta-button-text-color: #586069;
+  }
+
+  /*Component Container*/
+  .github-issue-comments {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   /*Comment Container*/

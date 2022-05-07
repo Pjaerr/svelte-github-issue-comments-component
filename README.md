@@ -54,6 +54,19 @@ The default styles closely follow github's own styles for issue comments, but if
 1. All of the styles live under the `.github-issue-comments` namespace so you can easily override these in your own CSS
 
 2. Alternatively, most of the common styles are provided as CSS variables so they can be changed in your own CSS (for example when setting up a dark theme that matches your site)
+  Note: You will either need this component's styles to be loaded _before_ your styles or you will need to re-define the variables you want to override on an element more specific than `:root` EG:
+
+  ```jsx
+    <div class="blog-post">
+      <GithubIssueComments ...>
+    </div>
+  ```
+
+  ```css
+    .blog-post {
+      --github-issue-comments-text-color: red;
+    }
+  ```
 
 ### The CSS variables and their default values
 
