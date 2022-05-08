@@ -309,7 +309,7 @@
   }
 
   .github-issue-comments__comment-box-body :global(p) :global(pre),
-  :global(code) {
+  .github-issue-comments__comment-box-body :global(code) {
     overflow-x: auto;
     padding: 4px;
     border-radius: 6px;
