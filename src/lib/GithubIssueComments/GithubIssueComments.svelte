@@ -283,6 +283,7 @@
 
   .github-issue-comments__comment-box-header-username {
     font-weight: bold;
+    flex: 1;
   }
 
   .github-issue-comments__comment-box-header-username span {
