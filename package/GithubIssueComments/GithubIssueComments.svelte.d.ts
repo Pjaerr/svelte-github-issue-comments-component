@@ -11,9 +11,9 @@ declare const __propDef: {
     };
     slots: {};
 };
-export declare type GithubIssueCommentsProps = typeof __propDef.props;
-export declare type GithubIssueCommentsEvents = typeof __propDef.events;
-export declare type GithubIssueCommentsSlots = typeof __propDef.slots;
+export type GithubIssueCommentsProps = typeof __propDef.props;
+export type GithubIssueCommentsEvents = typeof __propDef.events;
+export type GithubIssueCommentsSlots = typeof __propDef.slots;
 export default class GithubIssueComments extends SvelteComponentTyped<GithubIssueCommentsProps, GithubIssueCommentsEvents, GithubIssueCommentsSlots> {
 }
 export {};
